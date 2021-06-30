@@ -65,6 +65,24 @@ To produce a pretty symbol in Lean, type the *editor shortcut* followed by space
   * - ≠
     - ``\ne``
     - not equal to
+  * - ∈
+    - ``\in``
+    - belongs to
+  * - ∉
+    - ``\notin``
+    - does not belong to
+  * - ∟
+    - ``\angle``
+    - does not belong to
+  * - ▵
+    - ``\triangle``
+    - does not belong to
+  * - ≅
+    - ``\cong``
+    - does not belong to
+  * - ≃
+    - ``\simeq``
+    - does not belong to
 
 
 .. rubric:: Footnotes

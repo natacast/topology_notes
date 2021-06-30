@@ -4,13 +4,6 @@
 Introduction
 *****************
 
-.. todo:: 
-
-  Clean up the .lean files in the solutions folder and make them match with the problems in the notes.
-
-.. todo:: 
-
-  Proof-read this file, clean the language and fix any typos.
 
 What is Lean?
 ===============
@@ -45,7 +38,7 @@ By iterating these two operations, we can teach Lean to verify complex mathemati
   end
 
   theorem 
-  hard_proof : fermats_last_theorem_statement     -- cheating!
+  my_hard_proof : fermats_last_theorem_statement     -- cheating!
   :=
   begin
     sorry,
@@ -74,31 +67,17 @@ and Lean provides feedback in the ``Lean Infoview`` window.
 We use this feature to provide exercises inline in the notes. 
 We recommend attempting each exercise as you go along.
 
-These notes are designed for a 5-day Lean crash course at Mathcamp 2020.
-On Days 1 and 2 you'll learn the basics of type theory and some basic ``tactics`` in Lean. 
-On Days 3, 4, 5 you'll use these to prove increasingly complex theorems, namely the infinitude of primes and irrationality of :math:`\sqrt{2}`.
+These notes are based a 5-day Lean crash course at Mathcamp 2020. We have adapted them to
+BIYSC 2021.
 
 These notes provide a sneak-peek into the world of theorem proving in Lean and are by no means comprehensive.
-It is recommended that you simultaneously attempt at least one of the following two options.
-
-#. Play the `Natural Number Game`_.
-#. Read `Theorem Proving in Lean`_.
-
-The `Natural Number Game`_ is a fun (and highly addictive!) game that proves same basic properties of natural numbers in Lean.
-`Theorem Proving in Lean`_ is a comprehensive online book that aims to cover all the theorem proving aspects of Lean in great detail. 
-It is still under active development as of August 2020.
-
-The Lean community is very welcoming to newcomers, and people are available on the `Lean Zulip chat group`_ round the clock
-to answer questions. 
-You can also join Kevin Buzzard's `Discord server <https://t.co/DSz6mbw4Oc?amp=1>`__ which has a relatively younger crowd.
-You're highly encouraged to join one or both of these channels.
-
+It is recommended that you simultaneously attempt the `Natural Number Game`_.
+It is a fun (and highly addictive!) game that proves same basic properties of natural numbers in Lean.
 
 Acknowledgments.
 ===================
-These notes are developed by `Apurva Nakade <https://apurvanakade.github.io>`__ and `Jalex Stark <https://jalexstark.com/>`__ 
-with a lot of help from Mathcamp campers and Mathcamp staff Joanna and Maya (thanks!).
-Large chunks of these notes are taken from various learning resources available on the `leanprover-community website <https://leanprover-community.github.io/learn.html>`__.
+These notes are based on work of `Apurva Nakade <https://apurvanakade.github.io>`__ and `Jalex Stark <https://jalexstark.com/>`__.
+Large chunks of these notes are taken directly from <https://apurvanakade.github.io/courses/lean_at_MC2020/>`__.
 
 
 Useful Links.
@@ -109,11 +88,7 @@ Useful Links.
     #. `The Xena Project <https://xenaproject.wordpress.com/>`__
     #. `The Mechanization of Mathematics`_ 
     #. `The Future of Mathematics`_
-    #. `Kevin Buzzard's Twitch channel <https://www.twitch.tv/kbuzzard>`__. In particular, checkout `this video <https://www.twitch.tv/videos/665779560>`__ about summer projects.
-    #. `Jalex Stark's Twitch channel <https://www.twitch.tv/jalexstark>`__. 
-#. `Discord server <https://t.co/DSz6mbw4Oc?amp=1>`__ 
 #. `Lean Zulip chat group`_
-
 
 .. _`The Mechanization of Mathematics`: https://www.ams.org/journals/notices/201806/rnoti-p681.pdf
 .. _`The Future of Mathematics`: https://www.youtube.com/watch?v=Dp-mQ3HxgDE
@@ -122,5 +97,4 @@ Useful Links.
 .. _mathlib: https://leanprover-community.github.io/
 .. _`Natural Number Game`: https://wwwf.imperial.ac.uk/~buzzard/xena/natural_number_game/
 .. _`mathlib repository`: https://github.com/leanprover-community/mathlib
-.. _`Theorem Proving in Lean`: https://leanprover.github.io/theorem_proving_in_lean/
 .. _`Lean Zulip chat group`: https://leanprover.zulipchat.com/

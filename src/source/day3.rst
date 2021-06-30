@@ -161,7 +161,7 @@ If you need a term of type ``n > 0`` and you only have ``hn : 0 < n``, then you 
 
 
 We will need the following lemma later. Remember to save your proof. 
-(Here's a :doc:`hint <../hint_1_have_exercise>` if you need one.)
+
 **Warning:** If you need to type the divisibility symbol, type ``\mid``. 
 This is **not** the vertical line on your keyboard.
 

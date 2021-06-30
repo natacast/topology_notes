@@ -247,7 +247,6 @@ Barber paradox
 Let's disprove the "barber paradox" due to Bertrand Russell. 
 The claim is that in a certain town there is a (male) barber that shaves all the men who do not shave themselves. (Why is this a paradox?)
 Prove that this is a contradiction.
-Here are some :doc:`hints <../hint_1_barber_paradox>` if you get stuck.
 
 .. code-block:: lean
 
@@ -291,7 +290,6 @@ Assume that the main lounge is non-empty.
 At a fixed moment in time, there is someone in the lounge such that, 
 if they are singing, 
 then everyone in the lounge is singing. 
-(See :doc:`hints <../hint_1_mcsp>`).
 
 .. code:: lean
   :name: lounge_paradox

@@ -4,17 +4,6 @@
 Logic in Lean - Part 1
 ************************
 
-.. todo:: 
-
-  Proof-read this file, clean the language and fix any typos.
-
-Today's mission, should you choose to accept it, is to understand the philosophy of type theory (in Lean).
-Don't try to memorize anything, that will happen automatically. 
-Instead, try to r̶e̶a̶l̶i̶z̶e̶ ̶t̶h̶a̶t̶ ̶t̶h̶e̶r̶e̶ ̶i̶s̶ ̶n̶o̶ ̶s̶p̶o̶o̶n̶ do as many exercises as you can. 
-Practice is the only way to learn a new programming language.
-And **always save your work**. 
-The easiest way to do this is by bookmarking the Lean window in your web browser.
-
 Lean is built on top of a logic system called *type theory*, which is an alternative to *set theory*.
 In type theory, instead of elements we have *terms* and every term has a *type*.
 When translated to math, terms can be either mathematical objects, functions, propositions, or proofs. 
@@ -42,7 +31,7 @@ Implication
 ------------
 In set theory, the proposition ``P ⇒ Q`` ("P implies Q") is true if either both ``P`` and ``Q`` are true or if ``P`` is false. 
 In type theory, a proof of an implication ``P ⇒ Q`` is just a function ``f : P → Q``.
-Given a function ``f : P → Q``, every proof ``hp : P`` produces a proof ``f(hp) : Q``.
+Given a function ``f : P → Q``, every proof ``hp : P`` produces a proof ``f hp : Q``.
 If ``P`` is false then ``P`` is *empty*, and there exists an `empty function <https://en.wikipedia.org/wiki/Function_(mathematics)#empty_function>`_ from an empty type to any type.
 Hence, in type theory we use ``→`` to denote implication. 
 
@@ -80,7 +69,7 @@ Let us parse the above statement. (Lean ignores multiple whitespaces, tabs, and 
 You could theoretically write the entire code in a single line but then we can never be friends.)
 
 * ``fermats_last_theorem`` is the name of the theorem. 
-* ``(n : ℕ)`` and ``(n_gt_2 : n > 2)`` are the two *hypotheses*. 
+* ``(n : ℕ)`` and ``(n_gt_2 : n > 2)`` are the two *hypotheses*.
   The former says ``n`` is a natural number and the latter says that ``n_gt_2`` is a proof of ``n > 2``.
 * ``:`` is the delimiter between hypotheses and targets
 * ``¬ (∃ x y z : ℕ, (x^n + y^n = z^n) ∧ (x ≠ 0) ∧ (y ≠ 0) ∧ (z ≠ 0))`` is the *target* of the theorem.
@@ -239,7 +228,6 @@ When writing a big proof, you often want a healthy combination of the two that m
 
 For the following exercises, recall that ``¬ P`` is defined as ``P → false``,
 ``¬ (¬ P)`` is ``(P → false) → false``, and so on.
-Here are some :doc:`hints <../hint_1_negation_exercises>` if you get stuck.
 
 .. code:: lean
 
@@ -267,8 +255,6 @@ Here are some :doc:`hints <../hint_1_negation_exercises>` if you get stuck.
   begin
     sorry,
   end
-
-
 
 
 Proof by contradiction
@@ -421,27 +407,61 @@ For the following exercises, you only require ``exfalso``, ``push_neg``, and ``c
   --END--
 
 
-Final Remarks
-===============
+.. code:: lean
 
-You might be wondering, if type theory is so cool why have I not heard of it before?
+  --BEGIN--
+  constants Point Line : Type*
+  constant belongs : Point → Line → Prop
+  local notation A `∈` L := belongs A L
+  local notation A `∉` L := ¬ belongs A L
 
-Many programming languages highly depend on type theory (that's where the term ``datatype`` comes from). 
-Once you define a term ``x : ℕ``, a computer can immediately check that all the manipulations you do with ``x`` 
-are valid manipulations of natural numbers (so you don't accidentally divide by 0 [#f1]_ , for example).
+  -- I1: there is a unique line passing through two distinct points.
+  axiom I1 (A B : Point) (h : A ≠ B) : ∃! (ℓ : Line) , A ∈ ℓ ∧ B ∈ ℓ
 
-Unfortunately, this also means that the term ``1 : ℕ`` is different from the term ``1 : ℤ``.
-In Lean, if you do ``(1 : ℕ - 2 : ℕ)`` you get ``0 : ℕ`` but if you do ``(1 : ℤ - 2 : ℤ)`` you get ``-1 : ℤ``,
-that's because natural numbers and subtraction are not buddies.
-Another issue is that ``1 : ℕ = 1 : ℤ`` is not a valid statement in type theory.
-This is not the end of the world though. 
-Lean allows you to *coerce* ``1 : ℕ`` to ``1 : ℤ`` if you want subtraction to work properly, 
-or ``1 : ℕ`` to ``1 : ℚ`` if you want division to work properly.
+  -- I2: any line contains at least two points.
+  axiom I2 (ℓ : Line) : ∃ A B : Point, A ≠ B ∧ A ∈ ℓ ∧ B ∈ ℓ
 
-This, and a few other such things, is what drives most mathematicians away from type theory.
-But these things are only difficult when you're first learning them.
-With practice, type theory becomes second nature, the same as set theory.
+  -- I3: there exists 3 non-collinear points.
+  axiom I3 : ∃ A B C : Point, (A ≠ B ∧ A ≠ C ∧ B ≠ C ∧ (∀ ℓ : Line, (A ∈ ℓ ∧ B ∈ ℓ) → (¬ (C ∈ ℓ) )))
 
-.. rubric:: footnotes
+  -- We can make our own definitions
+  def collinear (A B C : Point) : Prop := ∃ (ℓ : Line), (A ∈ ℓ ∧ B ∈ ℓ ∧ C ∈ ℓ)
 
-.. [#f1] Except under staff supervision.
+  -- So let's prove that axiom I3 really says that there are 3 non-collinear points
+  -- We will need lots of new tactics:
+  -- * have
+  -- * use
+  -- * obtain / rcases
+  -- * unfold
+  -- * push_neg
+  -- * specialize
+  -- * intros
+  -- * exact
+  example : ∃ A B C : Point, ¬ collinear A B C :=
+  begin
+    sorry
+  end
+
+  -- The following two lemmas are particular cases of axiom I1
+  section basic_lemmas
+
+  lemma I11 (A B : Point) (h: A ≠ B) : ∃ (ℓ : Line), A ∈ ℓ ∧ B ∈ ℓ :=
+  begin
+    sorry
+  end
+
+  lemma I12 (A B : Point) (r s : Line) (h: A ≠ B) (hAr: A ∈ r) (hBr : B ∈ r) (hAs : A ∈ s) (hBs : B ∈ s) :
+  r = s :=
+  begin
+    sorry
+  end
+
+  -- Use I3 to prove the following lemma
+  lemma exists_point_not_on_line (ℓ : Line): ∃ A : Point, A ∉ ℓ :=
+  begin
+    sorry
+  end
+
+  end basic_lemmas
+
+  --END--
