@@ -4,9 +4,6 @@
 Glossary of tactics 
 *********************
 
-.. todo:: 
-
-  Needs general cleaning.
 
 Implications in Lean 
 ======================

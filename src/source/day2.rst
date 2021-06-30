@@ -4,11 +4,6 @@
 Logic in Lean - Part 2
 ***************************
 
-.. todo:: 
-
-  Proof-read this file, clean the language and fix any typos.
-
-
 Your mission today is to wrap up the remaining bits of logic and move on to doing some "actual math".
 Remember to **always save your work**. 
 You might find the :doc:`Glossary of tactics<../tactics>` page and the :doc:`Pretty symbols<../symbols>` page useful.
@@ -281,81 +276,6 @@ Prove that this is a contradiction.
       sorry,
     end 
   --END--
-
-
-Mathcampers singing paradox 
-------------------------------------
-  
-Assume that the main lounge is non-empty.
-At a fixed moment in time, there is someone in the lounge such that, 
-if they are singing, 
-then everyone in the lounge is singing. 
-
-.. code:: lean
-  :name: lounge_paradox
-
-  import tactic
-  -- the next two lines let us use the by_cases tactic without trouble
-  noncomputable theory
-  open_locale classical
-
-  --BEGIN--
-
-  /--------------------------------------------------------------------------
-
-  ``by_cases``
-
-    If ``P`` is a proposition, then ``by_cases P,`` creates two goals, 
-      the first with a hypothesis ``hp: P`` and 
-      second with a hypothesis ``hp: ¬ P``.
-
-  Delete the ``sorry,`` below and replace them with a legitimate proof.
-
-  --------------------------------------------------------------------------/
-
-  -- camper is a type. 
-  -- If x : camper then x is a camper in the main lounge.
-  -- singing(x) is inhabited if x is singing 
-
-  theorem math_campers_singing_paradox  
-    (camper : Type) 
-    (singing : camper → Prop) 
-    (alice : camper) -- making sure that there is at least one camper in the lounge
-    : ∃ x : camper, (singing x → (∀ y : camper, singing y)) :=
-  begin
-    sorry,
-  end
-  --END--
-
-Relationship conundrum
------------------------
-A relation ``r`` on a type ``X`` is a map ``r : X → X → Prop``.
-We say that ``x`` is *related* to ``y`` if ``r x y`` is inhabited.
-
-* ``r`` is reflexive if ``∀ x : X``, ``x`` is related to itself.
-* ``r`` is symmetric if ``∀ x y : X``, ``x`` is related to ``y`` implies ``y`` is related to ``x``.
-* ``r`` is transitive if ``∀ x y z : X``, ``x`` is related to ``y`` and ``y`` is related to ``x`` implies ``z`` is related to ``z``.
-* ``r`` is connected if for all ``x : X`` there is a ``y : Y`` such that ``x`` is related to ``y``.
-
-Show that if a relation is symmetric, transitive, and connected,
-then it is also reflexive.
-
-.. code:: lean
-
-  import tactic 
-  
-  variable X : Type 
-
-  theorem reflexive_of_symmetric_transitive_and_connected
-    (r : X → X → Prop)
-    (h_symm : ∀ x y : X, r x y → r y x) 
-    (h_trans : ∀ x y z : X, r x y → r y z → r x z) 
-    (h_connected : ∀ x, ∃ y, r x y) 
-  : (∀ x : X, r x x) :=
-  begin
-    sorry,
-  end
-
 
 
 Proving "trivial" statements 
