@@ -235,169 +235,29 @@ If you have a term ``hp : ∃ x : X, P x`` then from this you can extract a witn
       and ``y`` is a term of type ``X``, then 
       ``use y,`` changes the target to ``P y`` and tries to close the goal.
 
-Finally, we know enough Lean tactics to start doing some fun stuff.
+Geometry
+================================================================
 
-Barber paradox
-------------------------------------  
-Let's disprove the "barber paradox" due to Bertrand Russell. 
-The claim is that in a certain town there is a (male) barber that shaves all the men who do not shave themselves. (Why is this a paradox?)
-Prove that this is a contradiction.
+Now it's your turn! Introduce all of Hilbert's axioms. We'll give you then
+ones for incidence from yesterday.
 
-.. code-block:: lean
+.. code:: lean
 
   import tactic
-  -- the next two lines let us use the by_cases tactic without trouble
-  noncomputable theory
-  open_locale classical
+  constants Point Line : Type*
+  constant belongs : Point → Line → Prop
+  local notation A `∈` L := belongs A L
+  local notation A `∉` L := ¬ belongs A L
 
-  --BEGIN--
+  -- I1: there is a unique line passing through two distinct points.
+  axiom I1 (A B : Point) (h : A ≠ B) : ∃! (ℓ : Line) , A ∈ ℓ ∧ B ∈ ℓ
 
-  /--------------------------------------------------------------------------
+  -- I2: any line contains at least two points.
+  axiom I2 (ℓ : Line) : ∃ A B : Point, A ≠ B ∧ A ∈ ℓ ∧ B ∈ ℓ
 
-  ``by_cases``
+  -- I3: there exists 3 non-collinear points.
+  axiom I3 : ∃ A B C : Point, (A ≠ B ∧ A ≠ C ∧ B ≠ C ∧ (∀ ℓ : Line, (A ∈ ℓ ∧ B ∈ ℓ) → (¬ (C ∈ ℓ) )))
 
-    If ``P`` is a proposition, then ``by_cases P,`` creates two goals,
-      the first with a hypothesis ``hp: P`` and
-      second with a hypothesis ``hp: ¬ P``.
-
-  Delete the ``sorry,`` below and replace them with a legitimate proof.
-
-  --------------------------------------------------------------------------/
-
-  -- men is type. 
-  -- x : men means x is a man in the town
-  -- shaves x y is inhabited if x shaves y
-
-  variables (men : Type) (barber : men) 
-  variable  (shaves : men → men → Prop)
-
-  example : ¬ (∀ x : men, shaves barber x ↔ ¬ shaves x x) := 
-    begin 
-      sorry,
-    end 
-  --END--
-
-
-Proving "trivial" statements 
-=============================
-In mathlib, divisibility for natural numbers is defined as the following *proposition*.
-
-.. code:: 
-
-  a ∣ b := (∃ k : ℕ, a = b * k)
-
-For example, ``2 | 4`` will be a proposition ``∃ k : ℕ, 4 = 2 * k``. 
-**Very important.** The statement ``2 | 4`` is not saying that "2 divides 4 *is true*". 
-It is simply a proposition that requires a proof. 
-
-Similarly, the mathlib library also contains the following definition of ``prime``.
-
-.. code:: 
-
-    def nat.prime (p : ℕ) : Prop 
-    := 
-      2 ≤ p                                       -- p is at least 2
-      ∧                                           -- and 
-      ∀ (m : ℕ), m ∣ p → m = 1 ∨ m = p            -- if m divides p, then m = 1 or m = p.
-
-Same as with divisibility, for every natural number ``n``, 
-``nat.prime n`` is a *proposition*.
-So that ``nat.prime 101`` requires a proof.
-It is possible to go down the rabbit hole and prove it using just the axioms of natural numbers.
-However, this might come at the cost of your sanity.
-Fortunately, there are tactics in Lean for proving trivial proofs such as these.
-
-.. list-table:: 
-  :widths: 10 90
-  :header-rows: 0
-
-  * - ``norm_num``
-    - ``norm_num`` is Lean’s calculator. If the target has a proof that involves *only* numbers and arithmetic operations,
-      then ``norm_num`` will close this goal.
-
-      If ``hp : P`` is an assumption then ``norm_num at hp,`` tries to use simplify ``hp`` using basic arithmetic operations.
-
-  * - ``ring`` 
-    - ``ring,`` is Lean's symbolic manipulator. 
-      If the target has a proof that involves *only* algebraic operations, 
-      then ``ring,`` will close the goal.
-
-      If ``hp : P`` is an assumption then ``ring at hp,`` tries to use simplify ``hp`` using basic algebraic operations.
-
-  * - ``linarith`` 
-    - ``linarith,`` is Lean's inequality solver.
-  
-  * - ``simp`` 
-    - ``simp,`` is a very complex tactic that tries to use theorems from the mathlib library to close the goal. 
-      You should only ever use ``simp,`` to *close a goal* because its behavior changes as more theorems get added to the library.
-
-.. code:: lean 
-
-  import tactic data.nat.prime 
-
-  /--------------------------------------------------------------------------
-
-  ``norm_num``
-
-    Useful for arithmetic.
-  
-  ``ring``
-
-    Useful for basic algebra.
-
-  ``linarith``
-
-    Useful for inequalities.
-  
-  ``simp``
-
-    Complex simplifier. Use only to close goals.
-
-  Delete the ``sorry,`` below and replace them with a legitimate proof.
-
-  --------------------------------------------------------------------------/
-  
-  example : 1 > 0 :=
-  begin
-    sorry,
-  end
-
-  example (m a b : ℕ) :  m^2 + (a + b) * m + a * b = (m + a) * (m + b) :=
-  begin
-    sorry,
-  end
-
-  example : 101 ∣ 2020 :=
-  begin
-    sorry,
-  end
-
-
-  #print nat.prime 
-  example : nat.prime 101 := 
-  begin 
-    sorry,
-  end
-
-  -- you will need the definition 
-  -- a ∣ b := (∃ k : ℕ, a = b * k)
-  example (m a b : ℕ) :  m + a ∣ m^2 + (a + b) * m + a * b :=
-  begin
-    sorry,
-  end
-
-  -- try ``unfold nat.prime at hp,`` to get started
-  example (p : ℕ) (hp : nat.prime p) : ¬ (p = 1) :=
-  begin 
-    sorry,
-  end 
-
-  -- if none of the simplifiers work, try doing ``contrapose!``
-  -- sometimes the simplifiers need a little help
-  example (n : ℕ) : 0 < n ↔ n ≠ 0 :=
-  begin
-    sorry,
-  end
-
-
+  -- We can make our own definitions
+  def collinear (A B C : Point) : Prop := ∃ (ℓ : Line), (A ∈ ℓ ∧ B ∈ ℓ ∧ C ∈ ℓ)
 

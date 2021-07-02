@@ -73,16 +73,16 @@ To produce a pretty symbol in Lean, type the *editor shortcut* followed by space
     - does not belong to
   * - ∟
     - ``\angle``
-    - does not belong to
+    - angle
   * - ▵
     - ``\triangle``
-    - does not belong to
+    - triangle
   * - ≅
     - ``\cong``
-    - does not belong to
+    - congruence of segments
   * - ≃
     - ``\simeq``
-    - does not belong to
+    - congruence of angles
 
 
 .. rubric:: Footnotes

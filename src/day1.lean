@@ -1,3 +1,4 @@
+import tactic -- We want to use tactics to prove theorems
 import data.real.basic -- we tell LEAN to take all basic definitions from the real numbers ℝ
 noncomputable theory -- Don't worry about this. We tell lean that we will do abstract stuff.
 open_locale classical -- We tell LEAN that we will use what is called "classical logic" (!)
