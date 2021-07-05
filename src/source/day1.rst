@@ -17,7 +17,7 @@ In set theory, a **proposition** is any statement that has the potential of bein
 In type theory, there is a special type called ``Prop`` whose inhabitants are propositions.
 Furthermore, each proposition ``P`` is itself a type and the inhabitants of ``P`` are its proofs!
 
-.. code::
+.. code:: lean
 
     P : Prop     -- P is a proposition
     hp : P       -- hp is a proof of P
@@ -65,8 +65,7 @@ In Lean, a proposition and its proof are written using the following syntax.
   end
 
 
-Let us parse the above statement. (Lean ignores multiple whitespaces, tabs, and new lines. 
-You could theoretically write the entire code in a single line but then we can never be friends.)
+Let us parse the above statement.
 
 * ``fermats_last_theorem`` is the name of the theorem. 
 * ``(n : ℕ)`` and ``(n_gt_2 : n > 2)`` are the two *hypotheses*.
@@ -76,7 +75,7 @@ You could theoretically write the entire code in a single line but then we can n
 * ``:= begin ... end`` contains the proof. When you start your proof, Lean opens up a goal window  for you to keep track of hypotheses and targets. 
   **Your goal is to produce a term that has the type of the target**.
 
-  .. code:: 
+  .. code:: lean
 
     -- example of Lean goal window
     n : ℕ, -- hypothesis 1
@@ -188,7 +187,7 @@ Often these two tactics can be used interchangeably.
 Think of ``have`` as reasoning forward and ``apply`` as reasoning backward.
 When writing a big proof, you often want a healthy combination of the two that makes the proof readable.
 
-.. code:: lean 
+.. code:: lean
   :name: have_apply_examples 
 
   /--------------------------------------------------------------------------
@@ -508,7 +507,7 @@ You can also try to prove these two particular cases of I1.
   end
   --END--
 
-Let's prove a final useful lemma.
+Let's prove another useful lemma: given a line, there is a point outside it.
 
 .. code:: lean
 
@@ -546,6 +545,12 @@ Let's prove a final useful lemma.
   --BEGIN--
   -- Use I3 to prove the following lemma
   lemma exists_point_not_on_line (ℓ : Line): ∃ A : Point, A ∉ ℓ :=
+  begin
+    sorry
+  end
+
+  -- Challenge: is it true for two lines? If so, prove it
+  lemma exists_point_not_on_two_line (r s : Line): ∃ A : Point, A ∉ r ∧ A ∉ s :=
   begin
     sorry
   end

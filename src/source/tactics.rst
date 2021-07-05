@@ -37,7 +37,7 @@ Implications in Lean
      
        If ``f`` is a term of type ``P → Q`` and 
        ``hp`` is a term of type ``P``, then
-       ``have hq := f(hp),`` creates the hypothesis ``hq : Q`` .
+       ``have hq := f hp,`` creates the hypothesis ``hq : Q`` .
      
    * - ``apply``
      - ``apply`` is used for backward reasoning. 
@@ -206,14 +206,14 @@ Equality
   * - ``rw``
     - If ``f`` is a term of type ``P = Q`` (or ``P ↔ Q``), then 
 
-        ``rw f,`` searches for ``P`` in the target and replaces it with ``Q``.
+      ``rw f,`` searches for ``P`` in the target and replaces it with ``Q``.
 
-        ``rw ←f,`` searches for ``Q`` in the target and replaces it with ``P``.
+      ``rw ←f,`` searches for ``Q`` in the target and replaces it with ``P``.
       
       If additionally, ``hr : R`` is a hypothesis, then 
 
-        ``rw f at hr,`` searches for ``P`` in the expression ``R`` and replaces it with ``Q``.
+      ``rw f at hr,`` searches for ``P`` in the expression ``R`` and replaces it with ``Q``.
 
-        ``rw ←f at hr,`` searches for ``Q`` in the expression ``R`` and replaces it with ``P``.
+      ``rw ←f at hr,`` searches for ``Q`` in the expression ``R`` and replaces it with ``P``.
 
       Mathematically, this is saying because ``P = Q``, we can replace ``P`` with ``Q`` (or the other way around).
