@@ -1,6 +1,5 @@
 .. _day1:
 
-************************
 Logic in Lean - Part 1
 ************************
 
@@ -119,8 +118,7 @@ The first two tactics we'll learn are ``exact`` and ``intros``.
        we first need to choose an arbitrary element of ``P``.
 
 .. code:: lean
-  :name: exact_intros_examples
-
+  
   /--------------------------------------------------------------------------
 
   ``exact``
@@ -188,7 +186,6 @@ Think of ``have`` as reasoning forward and ``apply`` as reasoning backward.
 When writing a big proof, you often want a healthy combination of the two that makes the proof readable.
 
 .. code:: lean
-  :name: have_apply_examples 
 
   /--------------------------------------------------------------------------
 

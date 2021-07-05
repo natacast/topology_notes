@@ -6,7 +6,7 @@ Logic in Lean - Part 2
 
 Your mission today is to wrap up the remaining bits of logic and move on to doing some "actual math".
 Remember to **always save your work**. 
-You might find the :doc:`Glossary of tactics<../tactics>` page and the :doc:`Pretty symbols<../symbols>` page useful.
+You might find the :doc:`Glossary of tactics<tactics>` page and the :doc:`Pretty symbols<symbols>` page useful.
 
 Before we move on to new stuff, let's understand what we did yesterday. 
 
@@ -139,7 +139,6 @@ Similarly for ``P ∨ Q``, with a subtle change (see below).
 
 
 .. code:: lean
-  :name: and_or_example
 
   import tactic
 
