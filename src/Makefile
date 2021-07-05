@@ -5,7 +5,7 @@
 SPHINXOPTS    =
 SPHINXBUILD   = python3 -msphinx  # was: sphinx-build
 SPHINXPROJ    = biysc2021-notes
-SOURCEDIR     = source
+SOURCEDIR     = .
 BUILDDIR      = build
 
 # Put it first so that "make" without argument is like "make help".
