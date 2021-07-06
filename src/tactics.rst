@@ -203,6 +203,13 @@ Equality
   :widths: 10 90
   :header-rows: 0
 
+  * - ``refl``
+    - If the current goal is of the form ``X = X`` or ``P ↔ P``, then
+      ``refl`` will finish the proof. As long as both sides are defined to be equal,
+      this will work. For example, it will work with the goal ``3 = 2 + 1`` because
+      *by definition* the number 3 is defined to be 2 plus one.
+
+      Mathematically, this says "check that both sides are qual *by definition*".
   * - ``rw``
     - If ``f`` is a term of type ``P = Q`` (or ``P ↔ Q``), then 
 

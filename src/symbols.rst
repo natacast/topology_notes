@@ -46,10 +46,6 @@ To produce a pretty symbol in Lean, type the *editor shortcut* followed by space
     - ``\forall``
     - for all quantifier
 
-  * - ∣
-    - ``\mid``
-    - divisibility [#f1]_
-
   * - ℕ
     - ``\nat``
     - type of natural numbers
@@ -83,8 +79,3 @@ To produce a pretty symbol in Lean, type the *editor shortcut* followed by space
   * - ≃
     - ``\simeq``
     - congruence of angles
-
-
-.. rubric:: Footnotes
-
-.. [#f1] Be very careful! The symbol for divisibility is not the ``|`` symbol on your keyboard. Lean will through a cryptic error if you use it.
