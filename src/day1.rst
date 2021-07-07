@@ -467,43 +467,6 @@ what it means to be collinear and prove a statement which is easier to remember.
   end
   --END--
 
-You can also try to prove these two particular cases of I1.
-
-.. code:: lean
-
-  import tactic
-  constants Point Line : Type*
-  constant belongs : Point → Line → Prop
-  local notation A `∈` L := belongs A L
-  local notation A `∉` L := ¬ belongs A L
-
-  -- I1: there is a unique line passing through two distinct points.
-  axiom I1 (A B : Point) (h : A ≠ B) : ∃! (ℓ : Line) , A ∈ ℓ ∧ B ∈ ℓ
-
-  -- I2: any line contains at least two points.
-  axiom I2 (ℓ : Line) : ∃ A B : Point, A ≠ B ∧ A ∈ ℓ ∧ B ∈ ℓ
-
-  -- I3: there exists 3 non-collinear points.
-  axiom I3 : ∃ A B C : Point, (A ≠ B ∧ A ≠ C ∧ B ≠ C ∧ (∀ ℓ : Line, (A ∈ ℓ ∧ B ∈ ℓ) → (¬ (C ∈ ℓ) )))
-
-  -- We can make our own definitions
-  def collinear (A B C : Point) : Prop := ∃ (ℓ : Line), (A ∈ ℓ ∧ B ∈ ℓ ∧ C ∈ ℓ)
-
-  --BEGIN--
-  -- The following two lemmas are particular cases of axiom I1
-  
-  lemma I11 (A B : Point) (h: A ≠ B) : ∃ (ℓ : Line), A ∈ ℓ ∧ B ∈ ℓ :=
-  begin
-    sorry
-  end
-
-  lemma I12 (A B : Point) (r s : Line) (h: A ≠ B) (hAr: A ∈ r) (hBr : B ∈ r) (hAs : A ∈ s) (hBs : B ∈ s) :
-  r = s :=
-  begin
-    sorry
-  end
-  --END--
-
 In the morning we proved quite in detail the following theorem (we called Theorem 1). Before trying to prove it,
 make sure that the *Lean* statement is really what the English sentence says.
 
@@ -556,19 +519,6 @@ Let's prove another useful lemma: given a line, there is a point outside it.
 
   -- We can make our own definitions
   def collinear (A B C : Point) : Prop := ∃ (ℓ : Line), (A ∈ ℓ ∧ B ∈ ℓ ∧ C ∈ ℓ)
-
-  -- The following two lemmas are particular cases of axiom I1
-
-  lemma I11 (A B : Point) (h: A ≠ B) : ∃ (ℓ : Line), A ∈ ℓ ∧ B ∈ ℓ :=
-  begin
-    sorry
-  end
-
-  lemma I12 (A B : Point) (r s : Line) (h: A ≠ B) (hAr: A ∈ r) (hBr : B ∈ r) (hAs : A ∈ s) (hBs : B ∈ s) :
-  r = s :=
-  begin
-    sorry
-  end
 
   --BEGIN--
   -- Use I3 to prove the following lemma
