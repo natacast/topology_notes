@@ -237,7 +237,7 @@ If you have a term ``hp : ∃ x : X, P x`` then from this you can extract a witn
 Geometry
 ================================================================
 
-Now it's your turn! Introduce all of Hilbert's axioms. We'll give you then
+Now it's your turn! Introduce Hilbert's axioms for between-ness. We'll give you the
 ones for incidence from yesterday.
 
 .. code:: lean
@@ -259,4 +259,8 @@ ones for incidence from yesterday.
 
   -- We can make our own definitions
   def collinear (A B C : Point) : Prop := ∃ (ℓ : Line), (A ∈ ℓ ∧ B ∈ ℓ ∧ C ∈ ℓ)
+
+  -- We define the between-ness relation
+  constant between : Point → Point → Point → Prop
+  local notation A `*` B `*` C := between A B C
 
