@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="ascii" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>2. Logic in Lean - Part 2 &#8212; BIYSC 2021 - Notes 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Pretty Symbols in Lean" href="symbols.html" />
+    <link rel="prev" title="1. Logic in Lean - Part 1" href="day1.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="logic-in-lean-part-2">
+<span id="day2"></span><h1><span class="section-number">2. </span>Logic in Lean - Part 2<a class="headerlink" href="#logic-in-lean-part-2" title="Permalink to this headline">&#182;</a></h1>
+<p>Your mission today is to wrap up the remaining bits of logic and move on to doing some &#8220;actual math&#8221;.
+Remember to <strong>always save your work</strong>.
+You might find the <a class="reference internal" href="tactics.html"><span class="doc">Glossary of tactics</span></a> page and the <a class="reference internal" href="symbols.html"><span class="doc">Pretty symbols</span></a> page useful.</p>
+<p>Before we move on to new stuff, let&#8217;s understand what we did yesterday.</p>
+<section id="behind-the-scenes">
+<h2><span class="section-number">2.1. </span>Behind the scenes<a class="headerlink" href="#behind-the-scenes" title="Permalink to this headline">&#182;</a></h2>
+<p><strong>A note on brackets:</strong>
+It is not uncommon to compose half a dozen functions in Lean.
+The brackets get really messy and unwieldy.
+As such, Lean will often drop the brackets by following the following conventions.</p>
+<ul class="simple">
+<li><p>The function <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">&#8594;</span> <span class="pre">Q</span> <span class="pre">&#8594;</span> <span class="pre">R</span> <span class="pre">&#8594;</span> <span class="pre">S</span></code> stands for <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">&#8594;</span> <span class="pre">(Q</span> <span class="pre">&#8594;</span> <span class="pre">(R</span> <span class="pre">&#8594;</span> <span class="pre">S))</span></code>.</p></li>
+<li><p>The expression <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">+</span> <span class="pre">b</span> <span class="pre">+</span> <span class="pre">c</span> <span class="pre">+</span> <span class="pre">d</span></code> stands for <code class="docutils literal notranslate"><span class="pre">((a</span> <span class="pre">+</span> <span class="pre">b)</span> <span class="pre">+</span> <span class="pre">c)</span> <span class="pre">+</span> <span class="pre">d</span></code>.</p></li>
+</ul>
+<p>An easy way to remember this is that, arrows are bracketed on the right and binary operators on the left.</p>
+<section id="proof-irrelevance">
+<h3><span class="section-number">2.1.1. </span>Proof irrelevance<a class="headerlink" href="#proof-irrelevance" title="Permalink to this headline">&#182;</a></h3>
+<p>It might feel a bit weird to say that a proposition has proofs as its inhabitants.
+Proofs can get huge and it seems unnecessary to have to remember not just the statement but also its proof.
+This is something we don&#8217;t normally do in math.
+To hide this complication, in type theory there is an axiom, called <em>proof irrelevance</em>, which says that
+if <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">:</span> <span class="pre">Prop</span></code> and <code class="docutils literal notranslate"><span class="pre">hp1</span> <span class="pre">hp2</span> <span class="pre">:</span> <span class="pre">P</span></code> then <code class="docutils literal notranslate"><span class="pre">hp1</span> <span class="pre">=</span> <span class="pre">hp2</span></code>.
+Taking our <em>analogy</em> with sets further, you can think of a proposition as a set which is either empty or contains a single element (false or true).
+In fact, in some forms of type theory (e.g. <a class="reference external" href="https://en.wikipedia.org/wiki/Homotopy_type_theory">homotopy type theory</a>) this is taken as the definition of propositions.
+This is of course not true for general types.
+For example, <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">:</span> <span class="pre">&#8469;</span> <span class="pre">&#8800;</span> <span class="pre">1</span> <span class="pre">:</span> <span class="pre">&#8469;</span></code>.</p>
+</section>
+<section id="proofs-as-functions">
+<h3><span class="section-number">2.1.2. </span>Proofs as functions<a class="headerlink" href="#proofs-as-functions" title="Permalink to this headline">&#182;</a></h3>
+<p>Every time you successfully construct a proof of a theorem say</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>theorem tautology (P : Prop) : P &#8594; P :=
+begin
+  intro hp,
+  exact hp,
+end
+</pre></div>
+</div>
+<p>Lean constructs a <em>proof term</em> <code class="docutils literal notranslate"><span class="pre">tautology</span> <span class="pre">:</span> <span class="pre">&#8704;</span> <span class="pre">P</span> <span class="pre">:</span> <span class="pre">Prop,</span> <span class="pre">P</span> <span class="pre">&#8594;</span> <span class="pre">P</span></code>
+(you can see this by typing <code class="docutils literal notranslate"><span class="pre">#check</span> <span class="pre">tautology</span></code>).</p>
+<p>In type theory, the <em>for all</em> quantifier, <code class="docutils literal notranslate"><span class="pre">&#8704;</span></code>, is a generalized function, called a <a class="reference external" href="https://en.wikipedia.org/wiki/Dependent_type">dependent function</a>.
+For all practical purposes, we can think of <code class="docutils literal notranslate"><span class="pre">tautology</span></code> as having the type <code class="docutils literal notranslate"><span class="pre">(P</span> <span class="pre">:</span> <span class="pre">Prop)</span> <span class="pre">&#8594;</span> <span class="pre">(P</span> <span class="pre">&#8594;</span> <span class="pre">P)</span></code>.
+Note that this is not a function in the classical sense of the word because the codomain <code class="docutils literal notranslate"><span class="pre">(P</span> <span class="pre">&#8594;</span> <span class="pre">P)</span></code> <em>depends</em> on the input variable <code class="docutils literal notranslate"><span class="pre">P</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">Q</span> <span class="pre">:</span> <span class="pre">Prop</span></code>, then <code class="docutils literal notranslate"><span class="pre">tautology(Q)</span></code> is a term of type  <code class="docutils literal notranslate"><span class="pre">Q</span> <span class="pre">&#8594;</span> <span class="pre">Q</span></code>.</p>
+<p>Consider a theorem with multiple hypothesis, say</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">theorem</span> <span class="n">hello_world</span> <span class="p">(</span><span class="n">hp</span> <span class="p">:</span> <span class="n">P</span><span class="p">)</span> <span class="p">(</span><span class="n">hq</span> <span class="p">:</span> <span class="n">Q</span><span class="p">)</span> <span class="p">(</span><span class="n">hr</span> <span class="p">:</span> <span class="n">R</span><span class="p">)</span> <span class="p">:</span> <span class="n">S</span>
+</pre></div>
+</div>
+<p>Once we provide a proof of it, Lean will create a proof term
+<code class="docutils literal notranslate"><span class="pre">hello_world</span> <span class="pre">:</span> <span class="pre">(hp:P)</span> <span class="pre">&#8594;</span> <span class="pre">(hq:Q)</span> <span class="pre">&#8594;</span> <span class="pre">(hr:R)</span> <span class="pre">&#8594;</span> <span class="pre">S</span></code>.
+So that if we have terms <code class="docutils literal notranslate"><span class="pre">hp'</span> <span class="pre">:</span> <span class="pre">P</span></code>, <code class="docutils literal notranslate"><span class="pre">hq'</span> <span class="pre">:</span> <span class="pre">Q</span></code>, <code class="docutils literal notranslate"><span class="pre">hr'</span> <span class="pre">:</span> <span class="pre">R</span></code>
+then <code class="docutils literal notranslate"><span class="pre">hello_world</span> <span class="pre">hp'</span> <span class="pre">hq'</span> <span class="pre">hr'</span></code> (note the convenient lack of brackets) will be a term of type <code class="docutils literal notranslate"><span class="pre">S</span></code>.</p>
+<p>Once constructed, any term can be used in a later proof. For example,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>example (P Q : Prop) : (P &#8594; Q) &#8594; (P &#8594; Q) :=
+begin
+  exact tautology (P &#8594; Q),
+end
+</pre></div>
+</div>
+<p>This is how Lean simulates mathematics.
+Every time you prove a theorem using tactics a <em>proof term</em> gets created.
+Because of proof irrelevance, Lean forgets the exact content of the proof and
+only remembers its type.
+All the proof terms can then be used in later proofs.
+All of this falls under the giant umbrella of the <a class="reference external" href="https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence">Curry&#8211;Howard correspondence</a>.</p>
+<p>We&#8217;ll now continue our study of the remaining logical operators: <em>and</em> (<code class="docutils literal notranslate"><span class="pre">&#8743;</span></code>),
+<em>or</em> (<code class="docutils literal notranslate"><span class="pre">&#8744;</span></code>),
+<em>if and only if</em> (<code class="docutils literal notranslate"><span class="pre">&#8596;</span></code>),
+<em>for all</em> (<code class="docutils literal notranslate"><span class="pre">&#8704;</span></code>),
+<em>there exists</em> (<code class="docutils literal notranslate"><span class="pre">&#8707;</span></code>).</p>
+</section>
+</section>
+<section id="and-or">
+<h2><span class="section-number">2.2. </span>And / Or<a class="headerlink" href="#and-or" title="Permalink to this headline">&#182;</a></h2>
+<p>The operators <em>and</em> (<code class="docutils literal notranslate"><span class="pre">&#8743;</span></code>) and <em>or</em> (<code class="docutils literal notranslate"><span class="pre">&#8744;</span></code>) are very easy to use in Lean.
+Given a term <code class="docutils literal notranslate"><span class="pre">hpq</span> <span class="pre">:</span> <span class="pre">P</span> <span class="pre">&#8743;</span> <span class="pre">Q</span></code>,
+there are tactics that let you
+create terms <code class="docutils literal notranslate"><span class="pre">hp</span> <span class="pre">:</span> <span class="pre">P</span></code> and <code class="docutils literal notranslate"><span class="pre">hq</span> <span class="pre">:</span> <span class="pre">Q</span></code>, and vice versa.
+Similarly for <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">&#8744;</span> <span class="pre">Q</span></code>, with a subtle change (see below).</p>
+<p><strong>Note</strong> that when multiple goals are open, you are trying to solve the topmost goal.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cases</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cases</span></code> is a general tactic that breaks a complicated term into simpler ones.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">hpq</span></code> is a term of type <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">&#8743;</span> <span class="pre">Q</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">cases</span> <span class="pre">hpq</span> <span class="pre">with</span> <span class="pre">hp</span> <span class="pre">hq,</span></code> breaks it into <code class="docutils literal notranslate"><span class="pre">hp</span> <span class="pre">:</span> <span class="pre">P</span></code> and <code class="docutils literal notranslate"><span class="pre">hp</span> <span class="pre">:</span> <span class="pre">Q</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">fg</span></code> is a term of type <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">&#8596;</span> <span class="pre">Q</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">cases</span> <span class="pre">fg</span> <span class="pre">with</span> <span class="pre">f</span> <span class="pre">g,</span></code> breaks it into <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">:</span> <span class="pre">P</span> <span class="pre">&#8594;</span> <span class="pre">Q</span></code> and <code class="docutils literal notranslate"><span class="pre">g</span> <span class="pre">:</span> <span class="pre">Q</span> <span class="pre">&#8594;</span> <span class="pre">P</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">hpq</span></code> is a term of type <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">&#8744;</span> <span class="pre">Q</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">cases</span> <span class="pre">hpq</span> <span class="pre">with</span> <span class="pre">hp</span> <span class="pre">hq,</span></code> creates two goals and adds the hypotheses <code class="docutils literal notranslate"><span class="pre">hp</span> <span class="pre">:</span> <span class="pre">P</span></code> and <code class="docutils literal notranslate"><span class="pre">hq</span> <span class="pre">:</span> <span class="pre">Q</span></code> to one each.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">split</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">split</span></code> is a general tactic that breaks a complicated goal into simpler ones.</p>
+<p>If the target of the current goal is <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">&#8743;</span> <span class="pre">Q</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">split,</span></code> breaks up the goal into two goals with targets <code class="docutils literal notranslate"><span class="pre">P</span></code> and <code class="docutils literal notranslate"><span class="pre">Q</span></code>.</p>
+<p>If the target of the current goal is <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">&#215;</span> <span class="pre">Q</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">split,</span></code> breaks up the goal into two goals with targets <code class="docutils literal notranslate"><span class="pre">P</span></code> and <code class="docutils literal notranslate"><span class="pre">Q</span></code>.</p>
+<p>If the target of the current goal is <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">&#8596;</span> <span class="pre">Q</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">split,</span></code> breaks up the goal into two goals with targets <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">&#8594;</span> <span class="pre">Q</span></code> and <code class="docutils literal notranslate"><span class="pre">Q</span> <span class="pre">&#8594;</span> <span class="pre">P</span></code>.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">left</span></code></p></td>
+<td><p>If the target of the current goal is <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">&#8744;</span> <span class="pre">Q</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">left,</span></code> changes the target to <code class="docutils literal notranslate"><span class="pre">P</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">right</span></code></p></td>
+<td><p>If the target of the current goal is <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">&#8744;</span> <span class="pre">Q</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">right,</span></code> changes the target to <code class="docutils literal notranslate"><span class="pre">Q</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=import%20tactic%0A%0A--%20these%20two%20statements%20tell%20Lean%20to%20use%20the%20law%20of%20excluded%20middle%20as%20necessary%0Anoncomputable%20theory%0Aopen_locale%20classical%0A%0A--BEGIN--%0A%0A%0A%2F--------------------------------------------------------------------------%0A%0A%60%60cases%60%60%0A%0A%20%20%60%60cases%60%60%20is%20a%20general%20tactic%20that%20breaks%20up%20complicated%20terms.%0A%20%20If%20%60%60hpq%60%60%20is%20a%20term%20of%20type%20%60%60P%20%E2%88%A7%20Q%60%60%20or%20%60%60P%20%E2%88%A8%20Q%60%60%20or%20%60%60P%20%E2%86%94%20Q%60%60%2C%20then%20use%0A%20%20%60%60cases%20hpq%20with%20hp%20hq%2C%60%60.%0A%0A%60%60split%60%60%0A%0A%20%20If%20the%20target%20of%20the%20current%20goal%20is%20%60%60P%20%E2%88%A7%20Q%60%60%20or%20%60%60P%20%E2%86%94%20Q%60%60%2C%20then%20use%0A%20%20%60%60split%2C%60%60.%0A%0A%60%60left%60%60%2F%60%60right%60%60%0A%0A%20%20If%20the%20target%20of%20the%20current%20goal%20is%20%60%60P%20%E2%88%A8%20Q%60%60%2C%20then%20use%0A%20%20either%20%60%60left%2C%60%60%20or%20%60%60right%2C%60%60%20(choose%20wisely).%0A%0A%60%60exfalso%60%60%0A%0A%20%20Changes%20the%20target%20of%20the%20current%20goal%20to%20%60%60false%60%60.%0A%0ADelete%20the%20%60%60sorry%2C%60%60%20below%20and%20replace%20them%20with%20a%20legitimate%20proof.%0A%0A--------------------------------------------------------------------------%2F%0A%0Aexample%20(P%20Q%20%3A%20Prop)%20%3A%20P%20%E2%88%A7%20Q%20%E2%86%92%20Q%20%E2%88%A7%20P%20%3A%3D%0Abegin%0A%20%20sorry%2C%0Aend%0A%0Aexample%20(P%20Q%20%3A%20Prop)%20%3A%20P%20%E2%88%A8%20Q%20%E2%86%92%20Q%20%E2%88%A8%20P%20%3A%3D%0Abegin%0A%20%20sorry%2C%0Aend%0A%0Aexample%20(P%20Q%20R%20%3A%20Prop)%20%3A%20P%20%E2%88%A7%20false%20%E2%86%94%20false%20%3A%3D%0Abegin%0A%20%20sorry%2C%0Aend%0A%0Atheorem%20principle_of_explosion%20(P%20Q%20%3A%20Prop)%20%3A%20P%20%E2%88%A7%20%C2%AC%20P%20%E2%86%92%20Q%20%3A%3D%0Abegin%0A%20%20sorry%2C%0Aend%0A%0A--END--" target="_blank" tryitfile="../examples/day2/unnamed_141.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="sd">/--------------------------------------------------------------------------</span>
+
+<span class="sd">``cases``</span>
+
+<span class="sd">  ``cases`` is a general tactic that breaks up complicated terms.</span>
+<span class="sd">  If ``hpq`` is a term of type ``P &#8743; Q`` or ``P &#8744; Q`` or ``P &#8596; Q``, then use</span>
+<span class="sd">  ``cases hpq with hp hq,``.</span>
+
+<span class="sd">``split``</span>
+
+<span class="sd">  If the target of the current goal is ``P &#8743; Q`` or ``P &#8596; Q``, then use</span>
+<span class="sd">  ``split,``.</span>
+
+<span class="sd">``left``/``right``</span>
+
+<span class="sd">  If the target of the current goal is ``P &#8744; Q``, then use</span>
+<span class="sd">  either ``left,`` or ``right,`` (choose wisely).</span>
+
+<span class="sd">``exfalso``</span>
+
+<span class="sd">  Changes the target of the current goal to ``false``.</span>
+
+<span class="sd">Delete the ``sorry,`` below and replace them with a legitimate proof.</span>
+
+<span class="sd">--------------------------------------------------------------------------/</span>
+
+<span class="kd">example</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:</span> <span class="n">P</span> <span class="bp">&#8743;</span> <span class="n">Q</span> <span class="bp">&#8594;</span> <span class="n">Q</span> <span class="bp">&#8743;</span> <span class="n">P</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+  <span class="gr">sorry</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="kd">example</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:</span> <span class="n">P</span> <span class="bp">&#8744;</span> <span class="n">Q</span> <span class="bp">&#8594;</span> <span class="n">Q</span> <span class="bp">&#8744;</span> <span class="n">P</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+  <span class="gr">sorry</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="kd">example</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="n">R</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:</span> <span class="n">P</span> <span class="bp">&#8743;</span> <span class="n">false</span> <span class="bp">&#8596;</span> <span class="n">false</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+  <span class="gr">sorry</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="kd">theorem</span> <span class="n">principle_of_explosion</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:</span> <span class="n">P</span> <span class="bp">&#8743;</span> <span class="bp">&#172;</span> <span class="n">P</span> <span class="bp">&#8594;</span> <span class="n">Q</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+  <span class="gr">sorry</span><span class="o">,</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</div></section>
+<section id="quantifiers">
+<h2><span class="section-number">2.3. </span>Quantifiers<a class="headerlink" href="#quantifiers" title="Permalink to this headline">&#182;</a></h2>
+<p>As mentioned it the introduction the <em>for all</em> quantifier, <code class="docutils literal notranslate"><span class="pre">&#8704;</span></code>, is a generalization of a function.
+As such the tactics for dealing with <code class="docutils literal notranslate"><span class="pre">&#8704;</span></code> are the same as those for <code class="docutils literal notranslate"><span class="pre">&#8594;</span></code>.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">have</span></code></p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">hp</span></code> is a term of type <code class="docutils literal notranslate"><span class="pre">&#8704;</span> <span class="pre">x</span> <span class="pre">:</span> <span class="pre">X,</span> <span class="pre">P</span> <span class="pre">x</span></code> and
+<code class="docutils literal notranslate"><span class="pre">y</span></code> is a term of type <code class="docutils literal notranslate"><span class="pre">X</span></code> then
+<code class="docutils literal notranslate"><span class="pre">have</span> <span class="pre">hpy</span> <span class="pre">:=</span> <span class="pre">hp(y)</span></code> creates a hypothesis <code class="docutils literal notranslate"><span class="pre">hpy</span> <span class="pre">:</span> <span class="pre">P</span> <span class="pre">y</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">intro</span></code></p></td>
+<td><p>If the target of the current goal is <code class="docutils literal notranslate"><span class="pre">&#8704;</span> <span class="pre">x</span> <span class="pre">:</span> <span class="pre">X,</span> <span class="pre">P</span> <span class="pre">x</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">intro</span> <span class="pre">x,</span></code> creates a hypothesis <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">:</span> <span class="pre">X</span></code> and
+changes the target to <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">x</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+<p>The <em>there exists</em> quantifier, <code class="docutils literal notranslate"><span class="pre">&#8707;</span></code>, in type theory is very intuitive.
+If you want to prove a statement <code class="docutils literal notranslate"><span class="pre">&#8707;</span> <span class="pre">x</span> <span class="pre">:</span> <span class="pre">X,</span> <span class="pre">P</span> <span class="pre">x</span></code> then you need to provide a witness.
+If you have a term <code class="docutils literal notranslate"><span class="pre">hp</span> <span class="pre">:</span> <span class="pre">&#8707;</span> <span class="pre">x</span> <span class="pre">:</span> <span class="pre">X,</span> <span class="pre">P</span> <span class="pre">x</span></code> then from this you can extract a witness.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cases</span></code></p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">hp</span></code> is a term of type <code class="docutils literal notranslate"><span class="pre">&#8707;</span> <span class="pre">x</span> <span class="pre">:</span> <span class="pre">X,</span> <span class="pre">P</span> <span class="pre">x</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">cases</span> <span class="pre">hp</span> <span class="pre">with</span> <span class="pre">x</span> <span class="pre">key,</span></code> breaks it into
+<code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">:</span> <span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">key</span> <span class="pre">:</span> <span class="pre">P</span> <span class="pre">x</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">use</span></code></p></td>
+<td><p>If the target of the current goal is <code class="docutils literal notranslate"><span class="pre">&#8707;</span> <span class="pre">x</span> <span class="pre">:</span> <span class="pre">X,</span> <span class="pre">P</span> <span class="pre">x</span></code>
+and <code class="docutils literal notranslate"><span class="pre">y</span></code> is a term of type <code class="docutils literal notranslate"><span class="pre">X</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">use</span> <span class="pre">y,</span></code> changes the target to <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">y</span></code> and tries to close the goal.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="geometry">
+<h2><span class="section-number">2.4. </span>Geometry<a class="headerlink" href="#geometry" title="Permalink to this headline">&#182;</a></h2>
+<p>Now it&#8217;s your turn! Introduce Hilbert&#8217;s axioms for between-ness. We&#8217;ll give you the
+ones for incidence from yesterday.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=import%20tactic%0Aconstants%20Point%20Line%20%3A%20Type*%0Aconstant%20belongs%20%3A%20Point%20%E2%86%92%20Line%20%E2%86%92%20Prop%0Alocal%20notation%20A%20%60%E2%88%88%60%20L%20%3A%3D%20belongs%20A%20L%0Alocal%20notation%20A%20%60%E2%88%89%60%20L%20%3A%3D%20%C2%AC%20belongs%20A%20L%0A%0A--%20I1%3A%20there%20is%20a%20unique%20line%20passing%20through%20two%20distinct%20points.%0Aaxiom%20I1%20(A%20B%20%3A%20Point)%20(h%20%3A%20A%20%E2%89%A0%20B)%20%3A%20%E2%88%83!%20(%E2%84%93%20%3A%20Line)%20%2C%20A%20%E2%88%88%20%E2%84%93%20%E2%88%A7%20B%20%E2%88%88%20%E2%84%93%0A%0A--%20I2%3A%20any%20line%20contains%20at%20least%20two%20points.%0Aaxiom%20I2%20(%E2%84%93%20%3A%20Line)%20%3A%20%E2%88%83%20A%20B%20%3A%20Point%2C%20A%20%E2%89%A0%20B%20%E2%88%A7%20A%20%E2%88%88%20%E2%84%93%20%E2%88%A7%20B%20%E2%88%88%20%E2%84%93%0A%0A--%20I3%3A%20there%20exists%203%20non-collinear%20points.%0Aaxiom%20I3%20%3A%20%E2%88%83%20A%20B%20C%20%3A%20Point%2C%20(A%20%E2%89%A0%20B%20%E2%88%A7%20A%20%E2%89%A0%20C%20%E2%88%A7%20B%20%E2%89%A0%20C%20%E2%88%A7%20(%E2%88%80%20%E2%84%93%20%3A%20Line%2C%20(A%20%E2%88%88%20%E2%84%93%20%E2%88%A7%20B%20%E2%88%88%20%E2%84%93)%20%E2%86%92%20(%C2%AC%20(C%20%E2%88%88%20%E2%84%93)%20)))%0A%0A--%20We%20can%20make%20our%20own%20definitions%0Adef%20collinear%20(A%20B%20C%20%3A%20Point)%20%3A%20Prop%20%3A%3D%20%E2%88%83%20(%E2%84%93%20%3A%20Line)%2C%20(A%20%E2%88%88%20%E2%84%93%20%E2%88%A7%20B%20%E2%88%88%20%E2%84%93%20%E2%88%A7%20C%20%E2%88%88%20%E2%84%93)%0A%0A--%20We%20define%20the%20between-ness%20relation%0Aconstant%20between%20%3A%20Point%20%E2%86%92%20Point%20%E2%86%92%20Point%20%E2%86%92%20Prop%0Alocal%20notation%20A%20%60*%60%20B%20%60*%60%20C%20%3A%3D%20between%20A%20B%20C" target="_blank" tryitfile="../examples/day2/unnamed_243.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="n">tactic</span>
+<span class="kd">constants</span> <span class="n">Point</span> <span class="n">Line</span> <span class="o">:</span> <span class="kt">Type</span><span class="bp">*</span>
+<span class="kd">constant</span> <span class="n">belongs</span> <span class="o">:</span> <span class="n">Point</span> <span class="bp">&#8594;</span> <span class="n">Line</span> <span class="bp">&#8594;</span> <span class="kt">Prop</span>
+<span class="kn">local</span> <span class="kd">notation</span> <span class="n">A</span> <span class="bp">`&#8712;`</span> <span class="n">L</span> <span class="o">:=</span> <span class="n">belongs</span> <span class="n">A</span> <span class="n">L</span>
+<span class="kn">local</span> <span class="kd">notation</span> <span class="n">A</span> <span class="bp">`&#8713;`</span> <span class="n">L</span> <span class="o">:=</span> <span class="bp">&#172;</span> <span class="n">belongs</span> <span class="n">A</span> <span class="n">L</span>
+
+<span class="c1">-- I1: there is a unique line passing through two distinct points.</span>
+<span class="kd">axiom</span> <span class="n">I1</span> <span class="o">(</span><span class="n">A</span> <span class="n">B</span> <span class="o">:</span> <span class="n">Point</span><span class="o">)</span> <span class="o">(</span><span class="n">h</span> <span class="o">:</span> <span class="n">A</span> <span class="bp">&#8800;</span> <span class="n">B</span><span class="o">)</span> <span class="o">:</span> <span class="bp">&#8707;!</span> <span class="o">(</span><span class="n">&#8467;</span> <span class="o">:</span> <span class="n">Line</span><span class="o">)</span> <span class="o">,</span> <span class="n">A</span> <span class="bp">&#8712;</span> <span class="n">&#8467;</span> <span class="bp">&#8743;</span> <span class="n">B</span> <span class="bp">&#8712;</span> <span class="n">&#8467;</span>
+
+<span class="c1">-- I2: any line contains at least two points.</span>
+<span class="kd">axiom</span> <span class="n">I2</span> <span class="o">(</span><span class="n">&#8467;</span> <span class="o">:</span> <span class="n">Line</span><span class="o">)</span> <span class="o">:</span> <span class="bp">&#8707;</span> <span class="n">A</span> <span class="n">B</span> <span class="o">:</span> <span class="n">Point</span><span class="o">,</span> <span class="n">A</span> <span class="bp">&#8800;</span> <span class="n">B</span> <span class="bp">&#8743;</span> <span class="n">A</span> <span class="bp">&#8712;</span> <span class="n">&#8467;</span> <span class="bp">&#8743;</span> <span class="n">B</span> <span class="bp">&#8712;</span> <span class="n">&#8467;</span>
+
+<span class="c1">-- I3: there exists 3 non-collinear points.</span>
+<span class="kd">axiom</span> <span class="n">I3</span> <span class="o">:</span> <span class="bp">&#8707;</span> <span class="n">A</span> <span class="n">B</span> <span class="n">C</span> <span class="o">:</span> <span class="n">Point</span><span class="o">,</span> <span class="o">(</span><span class="n">A</span> <span class="bp">&#8800;</span> <span class="n">B</span> <span class="bp">&#8743;</span> <span class="n">A</span> <span class="bp">&#8800;</span> <span class="n">C</span> <span class="bp">&#8743;</span> <span class="n">B</span> <span class="bp">&#8800;</span> <span class="n">C</span> <span class="bp">&#8743;</span> <span class="o">(</span><span class="bp">&#8704;</span> <span class="n">&#8467;</span> <span class="o">:</span> <span class="n">Line</span><span class="o">,</span> <span class="o">(</span><span class="n">A</span> <span class="bp">&#8712;</span> <span class="n">&#8467;</span> <span class="bp">&#8743;</span> <span class="n">B</span> <span class="bp">&#8712;</span> <span class="n">&#8467;</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="bp">&#172;</span> <span class="o">(</span><span class="n">C</span> <span class="bp">&#8712;</span> <span class="n">&#8467;</span><span class="o">)</span> <span class="o">)))</span>
+
+<span class="c1">-- We can make our own definitions</span>
+<span class="kd">def</span> <span class="n">collinear</span> <span class="o">(</span><span class="n">A</span> <span class="n">B</span> <span class="n">C</span> <span class="o">:</span> <span class="n">Point</span><span class="o">)</span> <span class="o">:</span> <span class="kt">Prop</span> <span class="o">:=</span> <span class="bp">&#8707;</span> <span class="o">(</span><span class="n">&#8467;</span> <span class="o">:</span> <span class="n">Line</span><span class="o">),</span> <span class="o">(</span><span class="n">A</span> <span class="bp">&#8712;</span> <span class="n">&#8467;</span> <span class="bp">&#8743;</span> <span class="n">B</span> <span class="bp">&#8712;</span> <span class="n">&#8467;</span> <span class="bp">&#8743;</span> <span class="n">C</span> <span class="bp">&#8712;</span> <span class="n">&#8467;</span><span class="o">)</span>
+
+<span class="c1">-- We define the between-ness relation</span>
+<span class="kd">constant</span> <span class="n">between</span> <span class="o">:</span> <span class="n">Point</span> <span class="bp">&#8594;</span> <span class="n">Point</span> <span class="bp">&#8594;</span> <span class="n">Point</span> <span class="bp">&#8594;</span> <span class="kt">Prop</span>
+<span class="kn">local</span> <span class="kd">notation</span> <span class="n">A</span> <span class="bp">`*`</span> <span class="n">B</span> <span class="bp">`*`</span> <span class="n">C</span> <span class="o">:=</span> <span class="n">between</span> <span class="n">A</span> <span class="n">B</span> <span class="n">C</span>
+</pre></div>
+</div>
+</div></section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BIYSC 2021 - Notes</a></h1>
+
+
+
+
+
+
+
+
+<!-- <h3>Navigation</h3> -->
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="day1.html">1. Logic in Lean - Part 1</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Logic in Lean - Part 2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#behind-the-scenes">2.1. Behind the scenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#and-or">2.2. And / Or</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quantifiers">2.3. Quantifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#geometry">2.4. Geometry</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="symbols.html">Pretty Symbols in Lean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tactics.html">Glossary of tactics</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="../latex/biysc2021_notes.pdf">PDF version</a></li>
+    
+    <li class="toctree-l1"><a href="https://leanprover-community.github.io/lean-web-editor/">Lean Live Editor</a></li>
+    
+    <li class="toctree-l1"><a href="https://leanprover-community.github.io/mathlib_docs/">Lean Documentation</a></li>
+    
+    <li class="toctree-l1"><a href="https://leanprover-community.github.io/">Leanprover Community</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Marc Masdeu, Roberto Rubio.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/day2.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
