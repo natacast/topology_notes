@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: '3.8'
       - name: Install latex mk
-        run: apt-get udpate & apt-get install -y -q git latexmk
+        run: sudo apt-get udpate & sudo apt-get install -y -q git latexmk
       - name: Install python Lean dependencies
         run: python -m pip install --upgrade pip requests markdown2 toml mathlibtools toposort invoke sphinx sphinx-autobuild
       - name : Make documentation
