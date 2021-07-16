@@ -1,6 +1,6 @@
-# BIYSC 2021 - Notes
+# Topology Filters - Notes
 
-Source code for https://mmasdeu.github.io/biysc2021-notes
+Source code for https://carloscaralps.github.io/topology_filters-notes
 
 Download this project using `leanproject get mmasdeu/biysc2021-notes`
 
