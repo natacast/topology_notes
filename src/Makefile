@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = python3 -msphinx  # was: sphinx-build
-SPHINXPROJ    = biysc2021-notes
+SPHINXPROJ    = topologyfilters-notes
 SOURCEDIR     = .
 BUILDDIR      = build
 
