@@ -49,9 +49,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'BIYSC 2021 - Notes'
-copyright = '2021, Marc Masdeu, Roberto Rubio'
-author = 'Marc Masdeu, Roberto Rubio'
+project = 'Topology Filters - Notes'
+copyright = '2021, Carlos Caralps'
+author = 'Carlos Caralps'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -135,7 +135,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'biysc_2021_notes'
+htmlhelp_basename = 'topology_filters_notes'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -173,8 +173,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'biysc2021_notes.tex', 'BIYSC 2021 - Notes',
-     'Marc Masdeu \\and Roberto Rubio', 'manual'),
+    (master_doc, 'topology_filters.tex', 'Topology Filters - Notes',
+     'Carlos Caralps', 'manual'),
 ]
 
 
@@ -183,7 +183,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'biysc2021_notes', 'BIYSC 2021 - Notes',
+    (master_doc, 'topologyfilters_notes', 'Topology Filters - Notes',
      [author], 1)
 ]
 
@@ -193,7 +193,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'biysc2021_notes', 'BIYSC 2021 - Notes',
-     author, 'biysc2021_notes', 'Notes on Lean for BIYSC 2021',
+    (master_doc, 'topologyfilters_notes', 'Topology Filters - Notes',
+     author, 'topologyfilters_notes', 'Notes on Lean about Topology Filters',
      'Miscellaneous'),
 ]
