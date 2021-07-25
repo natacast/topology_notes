@@ -17,8 +17,8 @@ the next properties
   (iii) If ``E,A ∈ F``, then ``E ∩ A ∈ F``.
   
 
-The reader might have noticed we haven't included the empty axiom, this axiom states that the empty set cannot be in any filter, commonly used in filter definitions and also required for topology filter convergence.
-Assuming this axiom would make it impossible to define the neutral element in one of the operations we will use later.
+The reader might have noticed we haven't included the empty axiom (states that the empty set cannot be in any filter) commonly used in filter definitions and required for topology filter convergence. 
+Assuming it would make it impossible to define the neutral element in one of the operations we will use later.
 
 Having the conceptual definition of filters, we can define this structure in Lean. The following code lines were published, 
 in the mathlib repository, by Johannes Hölzl in Agoust of 2018.
