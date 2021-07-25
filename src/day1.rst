@@ -3,7 +3,7 @@
 Filter definition and algebraic structure
 ************************
 
-We will start defining filters and then the basic filter propositions will be proved by the common way and by Lean.
+We will start defining filters and, then the elementary filter propositions will be proved by the usual way and by Lean.
 The final aim of this chapter is to define an algebraic structure with filters, defining two operations.
 
 Filter definition
@@ -17,12 +17,11 @@ the next properties
   (iii) If ``E,A ∈ F``, then ``E ∩ A ∈ F``.
   
 
-
-The reader might have noticed we haven't included the empty axiom, normally used in the filter common definitions.
+The reader might have noticed we haven't included the empty axiom, this axiom states that the empty set cannot be in any filter, commonly used in filter definitions and also required for topology filter convergence.
 Assuming this axiom would make it impossible to define the neutral element in one of the operations we will use later.
 
-Having the conceptual definition of filters, we can define this structure in Lean. The following code lines were published 
-in the mathlib repository by Johannes Hölzl in Agoust of 2018.
+Having the conceptual definition of filters, we can define this structure in Lean. The following code lines were published, 
+in the mathlib repository, by Johannes Hölzl in Agoust of 2018.
 
 .. code:: lean
 
