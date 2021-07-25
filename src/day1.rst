@@ -10,7 +10,13 @@ Filter definition
 ==================
 Firstly, we will introduce the filter definition of a giving set.
 
-``Here goes the latex definition``
+**Definition 1.1** (Filter) Let ``X`` be a set, a filter is a family of subsets of the power ser ``F ⊆ 𝓟(X)`` satisfying 
+the next properties
+  i. The universal set is in the filter ``X ∈ F``.
+  ii. If ``E ∈ F``, then ``∀ A ∈ 𝓟(X)`` such that ``E ⊆ A``, we have ``A ∈ F``.
+  iii. If ``E, A ∈ F``, then ``E ∩ A ∈ F``.
+  
+
 
 The reader might have noticed we haven't included the empty axiom, normally used in the filter common definitions.
 Assuming this axiom would make it impossible to define the neutral element in one of the operations we will use later.
