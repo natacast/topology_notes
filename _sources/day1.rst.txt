@@ -4,7 +4,7 @@ Filter definition and algebraic structure
 ************************
 
 We will start defining filters and, then the elementary filter propositions will be proved by the usual way and by Lean.
-The final aim of this chapter is to define an algebraic structure with filters, defining two operations.
+This chapter aims to define an algebraic structure with filters using two operations.
 
 Filter definition
 ==================
