@@ -10,7 +10,7 @@ Filter definition
 ==================
 Firstly, we will introduce the filter definition of a giving set.
 
-**Definition 1.1** (Filter) Let ``X`` be a set, a filter is a family of subsets of the power ser ``F ⊆ 𝓟(X)`` satisfying 
+**Definition 1.1** (Filter). Let ``X`` be a set, a filter is a family of subsets of the power ser ``F ⊆ 𝓟(X)`` satisfying 
 the next properties
   (i) The universal set is in the filter ``X ∈ F``.
   (ii) If ``E ∈ F``, then ``∀A ∈ 𝓟(X)`` such that ``E ⊆ A``, we have ``A ∈ F``.
