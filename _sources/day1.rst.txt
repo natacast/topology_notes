@@ -3,8 +3,8 @@
 Filter definition and algebraic structure
 ************************
 
-In this chapter, we will define filters. Their basic propositions will be proved by the common way and by Lean. 
-The final aim is to define an algebraic structure with filters, defining two operations.
+We will start defining filters and then the basic filter propositions will be proved by the common way and by Lean.
+The final aim of this chapter is to define an algebraic structure with filters, defining two operations.
 
 Filter definition
 ==================
