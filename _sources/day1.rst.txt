@@ -39,7 +39,13 @@ We have introduced a definition of what we have supposed to be a particular type
 
 **Proposition 1.3** *Let* ``X`` *a set. For all* ``A ⊆ X`` *subsets, the principal filter of* ``A`` *is a filter.*
 
-*Proof*. 
+*Proof*. We will prove that a principal filter is a filter by proving the three properties of filters.
+
+  (i) It is clear that ``A ⊆ X``. Then, by definition, we have ``X ∈ P(A)``.
+  (ii) If we have ``E ∈ P(A)``, by definition, we also have ``A ⊆ E``. For all ``B ∈ 𝓟(X)`` such that ``E ⊆ B``, we will have ``A ⊆ B`` because of fundamental set propositions. Then we can conclude that ``B ∈ P(A)``.
+  (iii) If we have ``E,B ∈ P(A)``, by definition, we will have ``A ⊆ E`` and ``A ⊆ B``. Because ``A`` is contained in both subsets, we also have ``E ∩ B ⊆ E``, which led us to ``E ∩ B ∈ P(A)``. ``∎``
+
+When we attend to define a principal filter in Lean, we will be required to prove that this object is a filter. The following lines were published by Johannes Hölzl in August 2018 and define the principal filters in the mathlib repository.
 
 .. code:: lean
 
