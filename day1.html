@@ -49,10 +49,10 @@ the next properties</p>
 <li><p>If <code class="docutils literal notranslate"><span class="pre">E,A</span> <span class="pre">&#8712;</span> <span class="pre">F</span></code>, then <code class="docutils literal notranslate"><span class="pre">E</span> <span class="pre">&#8745;</span> <span class="pre">A</span> <span class="pre">&#8712;</span> <span class="pre">F</span></code>.</p></li>
 </ol>
 </div></blockquote>
-<p>The reader might have noticed we haven&#8217;t included the empty axiom (states that the empty set cannot be in any filter) commonly used in filter definitions and required for topology filter convergence.
-Assuming it would make it impossible to define the neutral element in one of the operations we will use later.</p>
+<p>The reader might have noticed we have not included the empty axiom (states that the empty set cannot be in any filter) commonly used in filter definitions and required for topology filter convergence.
+Assuming it, would make it impossible to define the neutral element in one of the operations we will use later.</p>
 <p>Having the conceptual definition of filters, we can define this structure in Lean. The following code lines were published,
-in the mathlib repository, by Johannes H&#246;lzl in Agoust of 2018.</p>
+in the mathlib repository, by Johannes H&#246;lzl in August 2018.</p>
 <div style="position: relative">
 <div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=structure%20filter%20(X%20%3A%20Type)%20%3A%3D%0A(sets%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3A%20set%20(set%20X))%0A(univ_sets%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3A%20set.univ%20%E2%88%88%20sets)%0A(sets_of_superset%20%7Bx%20y%7D%20%3A%20x%20%E2%88%88%20sets%20%E2%86%92%20x%20%E2%8A%86%20y%20%E2%86%92%20y%20%E2%88%88%20sets)%0A(inter_sets%20%7Bx%20y%7D%20%20%20%20%20%20%20%3A%20x%20%E2%88%88%20sets%20%E2%86%92%20y%20%E2%88%88%20sets%20%E2%86%92%20x%20%E2%88%A9%20y%20%E2%88%88%20sets)" target="_blank" tryitfile="../examples/day1/unnamed_26.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">structure</span> <span class="n">filter</span> <span class="o">(</span><span class="n">X</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:=</span>
@@ -119,7 +119,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
       &copy;2021, Carlos Caralps.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
