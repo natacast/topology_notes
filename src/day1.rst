@@ -49,6 +49,15 @@ When we attend to define a principal filter in Lean, we will be required to prov
 
 .. code:: lean
 
+  import data.set.basic
+  open set
+
+  structure filter (X : Type) :=
+  (sets                   : set (set X))
+  (univ_sets              : set.univ ∈ sets)
+  (sets_of_superset {x y} : x ∈ sets → x ⊆ y → y ∈ sets)
+  (inter_sets {x y}       : x ∈ sets → y ∈ sets → x ∩ y ∈ sets)
+  
   def principal {X : Type} (s : set X) : filter X :=
   { sets              := {t | s ⊆ t},
     univ_sets         := subset_univ s,
