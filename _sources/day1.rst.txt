@@ -10,11 +10,11 @@ Filter definition
 ==================
 Firstly, we will introduce the filter definition of a giving set.
 
-**Definition 1.1** (Filter). Let ``X`` be a set, a filter is a family of subsets of the power ser ``F ⊆ 𝓟(X)`` satisfying 
-the next properties
-  (i) The universal set is in the filter ``X ∈ F``.
-  (ii) If ``E ∈ F``, *then* ``∀A ∈ 𝓟(X)`` such that ``E ⊆ A``, we have ``A ∈ F``.
-  (iii) If ``E,A ∈ F``, then ``E ∩ A ∈ F``.
+**Definition 1.1** (Filter). *Let* ``X`` *be a set, a filter is a family of subsets of the power ser* ``F ⊆ 𝓟(X)`` *satisfying 
+the next properties*
+  (i) *The universal set is in the filter* ``X ∈ F``.
+  (ii) *If* ``E ∈ F``, *then* ``∀A ∈ 𝓟(X)`` *such that* ``E ⊆ A``, *we have* ``A ∈ F``.
+  (iii) *If* ``E,A ∈ F``, *then* ``E ∩ A ∈ F``.
   
 
 The reader might have noticed we have not included the empty axiom (states that the empty set cannot be in any filter) commonly used in filter definitions and required for topology filter convergence. 
@@ -33,7 +33,7 @@ in the mathlib repository, by Johannes Hölzl in August 2018.
 
 Having introduced the definition of filters, we will proceed with defining the principal filters. Those are essential to lots of topological structures as the open neighbourhood of a point.
 
-**Definition 1.2** *(Principal Filter). Let* ``X`` *a set and* ``A ⊆ X`` *a subset. We define the principal filter as the subset* ``{t ∈ 𝓟(X) | s ⊆ t}``, *and from now onwards, it will be denoted as* ``P(A)``.
+**Definition 1.2** (Principal Filter). *Let* ``X`` *a set and* ``A ⊆ X`` *a subset. We define the principal filter as the subset* ``{t ∈ 𝓟(X) | s ⊆ t}``, *and from now onwards, it will be denoted as* ``P(A)``.
 
 We have introduced a definition of what we have supposed to be a particular type of filter. Now, we should prove that it fulfils the conditions for being a filter.
 
