@@ -30,3 +30,25 @@ in the mathlib repository, by Johannes Hölzl in August 2018.
   (univ_sets              : set.univ ∈ sets)
   (sets_of_superset {x y} : x ∈ sets → x ⊆ y → y ∈ sets)
   (inter_sets {x y}       : x ∈ sets → y ∈ sets → x ∩ y ∈ sets)
+
+Having introduced the definition of filters, we will proceed with defining the principal filters. Those are essential to lots of topological structures as the open neighbourhood of a point.
+
+**Definition 1.2** (Principal Filter). Let ``X`` a set and ``A ⊆ X`` a subset. We define the principal filter as the subset ``{t ∈ 𝓟(X) | s ⊆ t}``, and from now onwards, it will be denoted as ``P(A)``.
+
+We have introduced a definition of what we have supposed to be a particular type of filter. Now it should be natural to prove that it fulfils the conditions for being a filter.
+
+**Proposition 1.3** 
+
+.. code:: lean
+
+  def principal {X : Type} (s : set X) : filter X :=
+  { sets              := {t | s ⊆ t},
+    univ_sets         := subset_univ s,
+    sets_of_superset  := assume x y hx hy, subset.trans hx hy,
+    inter_sets        := assume x y, subset_inter }
+    
+  localized "notation `P` := filter.principal" in filter
+
+
+Filter Order
+============
