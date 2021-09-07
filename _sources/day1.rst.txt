@@ -10,7 +10,7 @@ Filter definition
 ==================
 Firstly, we will introduce the filter definition of a giving set.
 
-**Definition 1.1** (Filter). *Let* ``X`` *be a set, a filter is a family of subsets of the power ser* ``F ⊆ 𝓟(X)`` *satisfying 
+**Definition 1.1.1** (Filter). *Let* ``X`` *be a set, a filter is a family of subsets of the power ser* ``F ⊆ 𝓟(X)`` *satisfying 
 the next properties*
   (i) *The universal set is in the filter* ``X ∈ F``.
   (ii) *If* ``E ∈ F``, *then* ``∀A ∈ 𝓟(X)`` *such that* ``E ⊆ A``, *we have* ``A ∈ F``.
@@ -20,8 +20,8 @@ the next properties*
 The reader might have noticed we have not included the empty axiom (states that the empty set cannot be in any filter) commonly used in filter definitions and required for topology filter convergence. 
 Assuming it, would make it impossible to define the neutral element in one of the operations we will use later.
 
-Having the conceptual definition of filters, we can define this structure in Lean. The following code lines were published, 
-in the mathlib repository, by Johannes Hölzl in August 2018.
+Having the conceptual definition of filters, we can define this structure in Lean. The following code lines were published
+in the mathlib repository, being the current definition of filters on that repository.
 
 .. code:: lean
 
@@ -33,11 +33,11 @@ in the mathlib repository, by Johannes Hölzl in August 2018.
 
 Having introduced the definition of filters, we will proceed with defining the principal filters. Those are essential to lots of topological structures as the open neighbourhood of a point.
 
-**Definition 1.2** (Principal Filter). *Let* ``X`` *a set and* ``A ⊆ X`` *a subset. We define the principal filter as the subset* ``{t ∈ 𝓟(X) | s ⊆ t}``, *and from now onwards, it will be denoted as* ``P(A)``.
+**Definition 1.1.2** (Principal Filter). *Let* ``X`` *a set and* ``A ⊆ X`` *a subset. We define the principal filter as the subset* ``{t ∈ 𝓟(X) | s ⊆ t}``, *and from now onwards, it will be denoted as* ``P(A)``.
 
 We have introduced a definition of what we have supposed to be a particular type of filter. Now, we should prove that it fulfils the conditions for being a filter.
 
-**Proposition 1.3** *Let* ``X`` *a set. For all* ``A ⊆ X`` *subsets, the principal filter of* ``A`` *is a filter.*
+**Proposition 1.1.3** *Let* ``X`` *a set. For all* ``A ⊆ X`` *subsets, the principal filter of* ``A`` *is a filter.*
 
 *Proof*. We will prove that a principal filter is a filter by proving the three properties of filters.
 
@@ -45,7 +45,7 @@ We have introduced a definition of what we have supposed to be a particular type
   (ii) If we have ``E ∈ P(A)``, by definition, we also have ``A ⊆ E``. For all ``B ∈ 𝓟(X)`` such that ``E ⊆ B``, we will have ``A ⊆ B`` because of fundamental set propositions. Then we can conclude that ``B ∈ P(A)``.
   (iii) If we have ``E,B ∈ P(A)``, by definition, we will have ``A ⊆ E`` and ``A ⊆ B``. Because ``A`` is contained in both subsets, we also have ``A ⊆ E ∩ B``, which led us to ``E ∩ B ∈ P(A)``. ``∎`` 
 
-When we attend to define a principal filter in Lean, we will be required to prove that this object is a filter. The following lines were published by Johannes Hölzl in August 2018 and define the principal filters in the mathlib repository.
+When we attend to define a principal filter in Lean, we will be required to prove that this object is a filter. The following lines are from mathlib repository, being the definition for principal filters that Lean community uses.
 
 .. code:: lean
 
