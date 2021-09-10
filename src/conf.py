@@ -50,7 +50,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Topology Filters - Notes'
-copyright = '2021, Carlos Caralps'
+copyright = '2021, Natalia Castellana'
 author = 'Carlos Caralps'
 
 # The version info for the project you're documenting, acts as replacement for
